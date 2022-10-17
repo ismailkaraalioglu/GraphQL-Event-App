@@ -5,7 +5,7 @@ type Event {
   date: String!
   from: String!
   to: String!
-  location_id: Int!
+  location_id: ID!
   user_id: ID!
   user: User!
   location: Location!
@@ -18,7 +18,7 @@ input CreatedEventInput {
   date: String!
   from: String!
   to: String!
-  location_id: Int!
+  location_id: ID!
   user_id: ID!
 }
 
@@ -28,7 +28,7 @@ input UpdatedEventInput {
   date: String
   from: String
   to: String
-  location_id: Int
+  location_id: ID
   user_id: ID
 }
 

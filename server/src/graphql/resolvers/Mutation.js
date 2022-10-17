@@ -5,11 +5,11 @@ export const Mutation = {
   createdUser: (_, { data }, { pubsub, db }) => {
     const newUser = { id: uuidv4(), ...data };
     db.users.push(newUser);
-    pubsub.publish("userCreated", newUser);
+    pubsub.publish("userCreated", { userCreated: newUser });
     return newUser;
   },
   updateUser: (_, { id, data }, { db }) => {
-    const userIndex = db.users.findIndex((user) => user.id === parseInt(id));
+    const userIndex = db.users.findIndex((user) => user.id === id);
     if (userIndex === -1) {
       throw new Error("User not found.");
     }
@@ -20,7 +20,7 @@ export const Mutation = {
     return updateUser;
   },
   deletedUser: (_, { id }, { db }) => {
-    const userIndex = db.users.findIndex((user) => user.id === parseInt(id));
+    const userIndex = db.users.findIndex((user) => user.id === id);
     if (userIndex === -1) {
       throw new Error("User not found.");
     }
@@ -40,13 +40,11 @@ export const Mutation = {
   createdEvent: (_, { data }, { pubsub, db }) => {
     const newEvent = { id: uuidv4(), ...data };
     db.events.push(newEvent);
-    pubsub.publish("eventCreated", newEvent);
+    pubsub.publish("eventCreated", { eventCreated: newEvent });
     return newEvent;
   },
   updatedEvent: (_, { id, data }, { db }) => {
-    const eventIndex = db.events.findIndex(
-      (event) => event.id === parseInt(id)
-    );
+    const eventIndex = db.events.findIndex((event) => event.id === id);
     if (eventIndex === -1) {
       throw new Error("Event not found.");
     }
@@ -57,9 +55,7 @@ export const Mutation = {
     return updateEvent;
   },
   deletedEvent: (_, { id }, { db }) => {
-    const eventIndex = db.events.findIndex(
-      (event) => event.id === parseInt(id)
-    );
+    const eventIndex = db.events.findIndex((event) => event.id === id);
     if (eventIndex === -1) {
       throw new Error("Event not found.");
     }
@@ -83,7 +79,7 @@ export const Mutation = {
   },
   updatedLocation: (_, { id, data }, { db }) => {
     const locationIndex = db.locations.findIndex(
-      (location) => location.id === parseInt(id)
+      (location) => location.id === id
     );
 
     if (locationIndex === -1) {
@@ -99,7 +95,7 @@ export const Mutation = {
   },
   deletedLocation: (_, { id }, { db }) => {
     const locationIndex = db.locations.findIndex(
-      (location) => location.id === parseInt(id)
+      (location) => location.id === id
     );
 
     if (locationIndex === -1) {
@@ -123,12 +119,12 @@ export const Mutation = {
   createdParticipant: (_, { data }, { pubsub, db }) => {
     const newParticipant = { id: uuidv4(), ...data };
     db.participants.push(newParticipant);
-    pubsub.publish("participantAdded", newParticipant);
+    pubsub.publish("participantAdded", { participantAdded: newParticipant });
     return newParticipant;
   },
   updatedParticipant: (_, { id, data }, { db }) => {
     const participantIndex = db.participants.findIndex(
-      (participant) => participant.id === parseInt(id)
+      (participant) => participant.id === id
     );
     if (participantIndex === -1) {
       throw new Error("Participant not found.");
@@ -141,7 +137,7 @@ export const Mutation = {
   },
   deletedParticipant: (_, { id }, { db }) => {
     const participantIndex = db.participants.findIndex(
-      (participant) => participant.id === parseInt(id)
+      (participant) => participant.id === id
     );
     if (participantIndex === -1) {
       throw new Error("Participant not found.");

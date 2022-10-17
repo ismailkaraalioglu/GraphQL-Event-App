@@ -1,10 +1,23 @@
+import { useEffect } from "react";
 import EventCard from "../../components/EventCard";
 import Loading from "../../components/Loading";
 import { useQuery } from "@apollo/client";
-import { GET_EVENTS } from "./queries";
+import { GET_EVENTS, EVENTS_SUBSCRİPTİON } from "./queries";
 
 function Home() {
-  const { loading, error, data } = useQuery(GET_EVENTS);
+  const { loading, error, data, subscribeToMore } = useQuery(GET_EVENTS);
+
+  useEffect(() => {
+    subscribeToMore({
+      document: EVENTS_SUBSCRİPTİON,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+        return {
+          events: [...prev.events, subscriptionData.data.eventCreated],
+        };
+      },
+    });
+  }, [subscribeToMore]);
 
   if (loading) {
     return <Loading />;

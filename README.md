@@ -17,7 +17,7 @@ npm install or yarn install
 npm run dev
 ```
 
-3. And go to http://127.0.0.1:4000/graphql
+3. And go to http://localhost:4000/graphql
 
 ### 2. React Client
 
@@ -42,8 +42,10 @@ npm start or yarn start
 :point_right: React-Router <br />
 :point_right: Apollo-Client <br />
 :point_right: GraphQL <br />
-:point_right: GraphQL-Yoga <br />
 :point_right: GraphQL-Tools <br />
+:point_right: Apollo-Server <br />
+:point_right: Subscriptions-Transport-WS <br />
+:point_right: Graphql-Subscriptions <br />
 :point_right: Material UI <br />
 :point_right: uuidv4 <br />
 

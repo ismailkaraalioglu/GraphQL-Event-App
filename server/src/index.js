@@ -1,17 +1,72 @@
-import { createServer, createPubSub } from "@graphql-yoga/node";
-
+import { ApolloServer } from "apollo-server-express";
+import { createServer } from "http";
+import express from "express";
+import {
+  ApolloServerPluginDrainHttpServer,
+  ApolloServerPluginLandingPageGraphQLPlayground,
+} from "apollo-server-core";
+import { makeExecutableSchema } from "@graphql-tools/schema";
+import { SubscriptionServer } from "subscriptions-transport-ws";
+import { execute, subscribe } from "graphql";
+import { PubSub } from "graphql-subscriptions";
 import typeDefs from "./graphql/typeDefs";
 import resolvers from "./graphql/resolvers";
 import db from "./data.json";
 
-const pubsub = createPubSub();
+const app = express();
+const httpServer = createServer(app);
 
-const server = createServer({
-  schema: {
-    typeDefs,
-    resolvers,
-  },
+const schema = makeExecutableSchema({ typeDefs, resolvers });
+
+const pubsub = new PubSub();
+
+const server = new ApolloServer({
+  schema,
   context: { pubsub, db },
+  plugins: [
+    ApolloServerPluginDrainHttpServer({ httpServer }),
+    ApolloServerPluginLandingPageGraphQLPlayground({}),
+    {
+      async serverWillStart() {
+        return {
+          async drainServer() {
+            subscriptionServer.close();
+          },
+        };
+      },
+    },
+  ],
 });
 
-server.start();
+const subscriptionServer = SubscriptionServer.create(
+  {
+    schema,
+    execute,
+    subscribe,
+    async onConnect() {
+      console.log("Connected!");
+      return { pubsub, db };
+    },
+    onDisconnect() {
+      console.log("Disconnected!");
+    },
+  },
+  {
+    server: httpServer,
+    path: server.graphqlPath,
+  }
+);
+
+async function startApolloServer() {
+  await server.start();
+  server.applyMiddleware({ app });
+
+  const PORT = 4000;
+  httpServer.listen(PORT, () => {
+    console.log(
+      `🚀 Server ready at http://localhost:${PORT}${server.graphqlPath}`
+    );
+  });
+}
+
+startApolloServer();

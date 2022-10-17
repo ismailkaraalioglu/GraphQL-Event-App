@@ -9,29 +9,27 @@ export const GET_EVENT = gql`
       date
       from
       to
-      user_id
-      location_id
       user {
-        id
         username
-        email
       }
       location {
-        id
-        name
-        desc
         lat
         lng
       }
       participants {
-        id
-        user_id
-        event_id
         user {
-          id
           username
-          email
         }
+      }
+    }
+  }
+`;
+
+export const PARTİCİPANT_SUBSCRİPTİON = gql`
+  subscription participantCreated($event_id: ID) {
+    participantAdded(event_id: $event_id) {
+      user {
+        username
       }
     }
   }
