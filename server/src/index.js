@@ -11,7 +11,12 @@ import { execute, subscribe } from "graphql";
 import { PubSub } from "graphql-subscriptions";
 import typeDefs from "./graphql/typeDefs";
 import resolvers from "./graphql/resolvers";
-import db from "./data.json";
+
+// Fake data
+import data from "./data.json";
+
+import db from "./db";
+db();
 
 const app = express();
 const httpServer = createServer(app);
@@ -22,7 +27,7 @@ const pubsub = new PubSub();
 
 const server = new ApolloServer({
   schema,
-  context: { pubsub, db },
+  context: { pubsub, db: data },
   plugins: [
     ApolloServerPluginDrainHttpServer({ httpServer }),
     ApolloServerPluginLandingPageGraphQLPlayground({}),

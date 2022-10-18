@@ -13,6 +13,8 @@ coverage/
 reports/
 junit.xml
 
+.env
+
 node_modules/
 
 .DS_Store
