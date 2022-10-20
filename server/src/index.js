@@ -12,6 +12,12 @@ import { PubSub } from "graphql-subscriptions";
 import typeDefs from "./graphql/typeDefs";
 import resolvers from "./graphql/resolvers";
 
+// Models
+import Event from "./models/Event";
+import User from "./models/User";
+import Location from "./models/Location";
+import Participant from "./models/Participant";
+
 // Fake data
 import data from "./data.json";
 
@@ -27,7 +33,7 @@ const pubsub = new PubSub();
 
 const server = new ApolloServer({
   schema,
-  context: { pubsub, db: data },
+  context: { pubsub, db: data, _db: { Event, User, Location, Participant } },
   plugins: [
     ApolloServerPluginDrainHttpServer({ httpServer }),
     ApolloServerPluginLandingPageGraphQLPlayground({}),

@@ -1,4 +1,4 @@
 export const Participant = {
-  user: (parent, __, { db }) =>
-    db.users.find((user) => user.id == parent.user_id),
+  user: async (parent, __, { _db }) => await _db.User.findById(parent.user),
+  event: async (parent, __, { _db }) => await _db.Event.findById(parent.event)
 };

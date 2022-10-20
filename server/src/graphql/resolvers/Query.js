@@ -1,19 +1,17 @@
 export const Query = {
   // USER
-  users: (_, __, { db }) => db.users,
-  user: (_, { id }, { db }) => db.users.find((user) => user.id == id),
+  users: async (_, __, { _db }) => await _db.User.find(),
+  user: async (_, { id }, { _db }) => await _db.User.findById(id),
 
   // EVENT
-  events: (_, __, { db }) => db.events,
-  event: (_, { id }, { db }) => db.events.find((event) => event.id == id),
+  events: async (_, __, { _db }) => await _db.Event.find(),
+  event: async (_, { id }, { _db }) => await _db.Event.findById(id),
 
   // LOCATİON
-  locations: (_, __, { db }) => db.locations,
-  location: (_, { id }, { db }) =>
-    db.locations.find((location) => location.id == id),
+  locations: async (_, __, { _db }) => await _db.Location.find(),
+  location: async (_, { id }, { _db }) => await _db.Location.findById(id),
 
   // PARTİCİPANT
-  participants: (_, __, { db }) => db.participants,
-  participant: (_, { id }, { db }) =>
-    db.participants.find((participant) => participant.id == id),
+  participants: async (_, __, { _db }) => await _db.Participant.find(),
+  participant: async (_, { id }, { _db }) => await _db.Participant.findById(id),
 };
